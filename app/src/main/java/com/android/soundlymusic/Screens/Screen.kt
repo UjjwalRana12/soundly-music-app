@@ -17,6 +17,9 @@ import com.android.soundlymusic.Components.Button
 import com.android.soundlymusic.Components.SimpleText
 import com.android.soundlymusic.Components.ThoughtText
 import com.android.soundlymusic.Components.WelcomeImage
+import com.android.soundlymusic.Components.displayCard
+import com.android.soundlymusic.Components.initialPart
+import com.android.soundlymusic.ui.theme.lightblue
 
 @Composable
 fun WelcomeScreen(navController: NavHostController) {
@@ -52,33 +55,16 @@ fun WelcomeScreen(navController: NavHostController) {
 }
 
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen(navController: NavHostController) {
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Column {
+        initialPart()
+        displayCard(navController = navController)
 
-        Column {
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
-                    .background(Color.White)
-            )
-            ThoughtText("this is second screen")
-            SimpleText("this is m y second screen ")
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
-                    .background(Color.White)
-            )
-            WelcomeImage()
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
-                    .background(Color.White)
-            )
-        }
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .background(lightblue)
+            .height(10.dp))
     }
 }
 

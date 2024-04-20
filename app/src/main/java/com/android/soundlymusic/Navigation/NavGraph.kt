@@ -18,7 +18,7 @@ fun NavGraph(){
         }
 
         composable(route=Routes.SignUpRoutes.routes){
-           SignUpScreen()
+           SignUpScreen(navController)
         }
     }
 }
