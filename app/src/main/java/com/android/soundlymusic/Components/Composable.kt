@@ -118,7 +118,7 @@ fun SimpleText(text: String="Let the music take control!"){
 @Composable
 fun Button(
     text: String="Get Started",
-    destination:String="",
+    destination:Routes=Routes.SignUpRoutes,
     navController: NavController)
 {
     val context = LocalContext.current
@@ -128,7 +128,7 @@ fun Button(
 
 
     ){
-        Button(onClick = { navController.navigate(Routes.SignUpRoutes.routes) },
+        Button(onClick = { navController.navigate(destination.routes) },
             shape = MaterialTheme.shapes.medium,
             colors=  ButtonDefaults.buttonColors(Mainblue),
             modifier = Modifier.align(Center).height(56.dp).width(320.dp).clickable {  }

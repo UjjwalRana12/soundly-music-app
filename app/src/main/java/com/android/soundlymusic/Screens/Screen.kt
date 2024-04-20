@@ -63,8 +63,8 @@ fun SignUpScreen() {
                     .height(56.dp)
                     .background(Color.White)
             )
-            ThoughtText()
-            SimpleText()
+            ThoughtText("this is second screen")
+            SimpleText("this is m y second screen ")
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
