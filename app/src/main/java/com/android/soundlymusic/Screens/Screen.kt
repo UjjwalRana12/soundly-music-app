@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.android.soundlymusic.Components.Button
-import com.android.soundlymusic.Components.OTPSegementText
+import com.android.soundlymusic.Components.ButtonComposable
+import com.android.soundlymusic.Components.OTPSegmentText
 import com.android.soundlymusic.Components.OTPTextFields
 import com.android.soundlymusic.Components.SimpleText
 import com.android.soundlymusic.Components.ThoughtText
@@ -32,31 +32,36 @@ import com.android.soundlymusic.ui.theme.lightblue
 @Composable
 fun WelcomeScreen(navController: NavHostController) {
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White)){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
 
         Column {
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .background(Color.White))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .background(Color.White)
+            )
             ThoughtText()
             SimpleText()
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .background(Color.White))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .background(Color.White)
+            )
             WelcomeImage()
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(96.dp)
-                .background(Color.White))
-            Button(color = Color.White, navController = navController)
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .background(Color.White))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(196.dp)
+                    .background(Color.White)
+            )
+            ButtonComposable(color = Color.White, navController = navController)
+
 
         }
     }
@@ -69,39 +74,54 @@ fun SignUpScreen(navController: NavHostController) {
         initialPart()
         displayCard(navController = navController)
 
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .background(lightblue)
-            .height(10.dp))
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(lightblue)
+                .height(10.dp)
+        )
     }
 }
 
 
 @Composable
-fun OTPScreen(navController: NavController){
+fun OTPScreen(navController: NavController) {
 
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .background(Color.White)){
-        Card(modifier = Modifier
-            .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
-            .background(lightblue)
-            .fillMaxWidth(),
-        ) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+    ) {
+        Column {
+
+            initialPart("", false)
+            Card(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
+                    .background(lightblue)
+                    .fillMaxWidth(),
+            ) {
 
 
-            initialPart("",false)
-            OTPSegementText()
-            OTPTextFields(length = 4, onFilled ={ } )
-            Button(text = "Verify", destination = Routes.WelcomeRoutes, navController = navController)
+                OTPSegmentText()
+                OTPTextFields(length = 4, onFilled = { })
+                Spacer(modifier = Modifier.fillMaxWidth().background(lightblue).height(23.dp))
+                ButtonComposable(
+                    text = "Verify",
+                    destination = Routes.WelcomeRoutes,
+                    navController = navController
+                )
+                Spacer(modifier = Modifier.fillMaxWidth().background(lightblue).height(23.dp))
 
+            }
         }
     }
 }
+
 @Preview
 @Composable
-fun OTPScreenpreview(){
-    val navController= rememberNavController()
+fun OTPScreenpreview() {
+    val navController = rememberNavController()
     OTPScreen(navController)
 
 
