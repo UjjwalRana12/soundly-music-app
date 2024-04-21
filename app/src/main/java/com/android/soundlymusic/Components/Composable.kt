@@ -25,19 +25,28 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Bottom
+import androidx.compose.ui.Alignment.Companion.BottomStart
 import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusOrder
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -49,6 +58,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -58,6 +69,7 @@ import androidx.navigation.NavController
 import com.android.soundlymusic.Navigation.Routes
 import com.android.soundlymusic.R
 import com.android.soundlymusic.ui.theme.Mainblue
+import com.android.soundlymusic.ui.theme.gray
 import com.android.soundlymusic.ui.theme.lightblue
 
 
@@ -129,6 +141,7 @@ fun SimpleText(text: String="Let the music take control!"){
 
 @Composable
 fun Button(
+    color: Color= lightblue,
     text: String="Get Started",
     destination:Routes=Routes.SignUpRoutes,
     navController: NavController)
@@ -321,7 +334,7 @@ fun WelcomeToSoundly(text: String = " Cleaner") {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 
-fun userEditText(upper_text:String="username",label:String="Enter Text", navigateText:String="sign in"){
+fun userEditText(upper_text:String="username",label:String="Enter Text"){
     var text by remember { mutableStateOf("") }
 
     var myColor:Color= lightblue
@@ -343,7 +356,6 @@ fun userEditText(upper_text:String="username",label:String="Enter Text", navigat
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = upper_text, fontFamily= fontFamily)
-                Text(text = navigateText, color = Mainblue, style = TextStyle(fontWeight = FontWeight.Bold, fontFamily = fontFamily))
             }
 
             TextField(
@@ -379,13 +391,85 @@ fun userEditText(upper_text:String="username",label:String="Enter Text", navigat
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OTPTextFields(
+    modifier: Modifier = Modifier,
+    length: Int,
+    onFilled: (code: String) -> Unit
+) {
+    var code by remember { mutableStateOf(List(length) { "" }) }
+    val focusRequesters = List(length) { FocusRequester() }
+
+    LaunchedEffect(code) {
+        if (code.none { it.isEmpty() }) { // When all fields are filled
+            onFilled(code.joinToString(""))
+        }
+    }
+
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .background(lightblue), contentAlignment = Alignment.Center){
 
 
+        Column(modifier = modifier
+            .wrapContentSize()
+            .background(lightblue)) {
+
+            Row {
+                code.indices.forEach { index ->
+                    OutlinedTextField(
+                        value = code[index],
+                        onValueChange = { value ->
+                            val newCode = code.toMutableList()
+                            if (value.length <= 1) { // Ensure single character
+                                newCode[index] = value
+                                code = newCode
+                                if (value.isNotEmpty() && index < length - 1) {
+                                    focusRequesters[index + 1].requestFocus()
+                                }
+                                if (value.isEmpty() && index > 0) {
+                                    focusRequesters[index - 1].requestFocus()
+                                }
+                            }
+                        },
+
+                        visualTransformation = PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = if (index == length - 1) ImeAction.Done else ImeAction.Next
+                        ),
+                        singleLine = true,
+                        textStyle = MaterialTheme.typography.bodySmall.copy(textAlign = TextAlign.Center, color = Color.Black),
+                        modifier = modifier
+                            .width(50.dp)
+                            .height(50.dp)
+                            .focusOrder(focusRequesters[index]),
+                    )
+                    if (index < length - 1)
+                        Spacer(modifier = Modifier.width(15.dp))
+                }
+            }
+            Row {
+                Text(
+                    text = "Resend OTP",
+                    color = Color.Black,
+                    modifier=Modifier.align(Bottom)
+                )
+            }
+        }
+    }
+}
 
 
 
 @Preview
 @Composable
-fun PreviewLogo(){
-   welSignInBox()
+fun previewotp(){
+    OTPTextFields(length = 4, onFilled = { })
 }
+
+
+
+
+

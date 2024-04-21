@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.android.soundlymusic.Screens.OTPScreen
 import com.android.soundlymusic.Screens.SignUpScreen
 import com.android.soundlymusic.Screens.WelcomeScreen
 
@@ -19,6 +20,10 @@ fun NavGraph(){
 
         composable(route=Routes.SignUpRoutes.routes){
            SignUpScreen(navController)
+        }
+
+        composable(route=Routes.OtpRoutes.routes){
+            OTPScreen(navController = navController)
         }
     }
 }

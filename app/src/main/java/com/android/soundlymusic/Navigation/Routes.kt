@@ -6,5 +6,6 @@ sealed class Routes(var routes:String){
 
     object SignUpRoutes:Routes("signup")
 
+    object OtpRoutes:Routes("otpscreen")
 
 }
