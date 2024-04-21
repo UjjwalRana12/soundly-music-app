@@ -15,10 +15,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.android.soundlymusic.Api.ApiInterface
 import com.android.soundlymusic.Components.ButtonComposable
+import com.android.soundlymusic.Components.OTPButton
 import com.android.soundlymusic.Components.OTPSegmentText
 import com.android.soundlymusic.Components.OTPTextFields
 import com.android.soundlymusic.Components.SimpleText
@@ -27,6 +30,7 @@ import com.android.soundlymusic.Components.WelcomeImage
 import com.android.soundlymusic.Components.displayCard
 import com.android.soundlymusic.Components.initialPart
 import com.android.soundlymusic.Navigation.Routes
+import com.android.soundlymusic.ViewModel.SignUpViewModel
 import com.android.soundlymusic.ui.theme.lightblue
 
 @Composable
@@ -60,7 +64,7 @@ fun WelcomeScreen(navController: NavHostController) {
                     .height(196.dp)
                     .background(Color.White)
             )
-            ButtonComposable(color = Color.White, navController = navController)
+            OTPButton(color = Color.White, navController = navController)
 
 
         }
@@ -68,11 +72,12 @@ fun WelcomeScreen(navController: NavHostController) {
 }
 
 @Composable
-fun SignUpScreen(navController: NavHostController) {
+fun SignUpScreen(navController: NavHostController,viewModel: SignUpViewModel) {
+    val signUpViewModel = viewModel<SignUpViewModel>()
 
     Column {
         initialPart()
-        displayCard(navController = navController)
+        displayCard(navController = navController, viewModel = viewModel)
 
         Spacer(
             modifier = Modifier
@@ -105,13 +110,15 @@ fun OTPScreen(navController: NavController) {
 
                 OTPSegmentText()
                 OTPTextFields(length = 4, onFilled = { })
-                Spacer(modifier = Modifier.fillMaxWidth().background(lightblue).height(23.dp))
-                ButtonComposable(
-                    text = "Verify",
-                    destination = Routes.WelcomeRoutes,
-                    navController = navController
-                )
-                Spacer(modifier = Modifier.fillMaxWidth().background(lightblue).height(23.dp))
+                Spacer(modifier = Modifier
+                    .fillMaxWidth()
+                    .background(lightblue)
+                    .height(23.dp))
+                OTPButton(navController = navController)
+                Spacer(modifier = Modifier
+                    .fillMaxWidth()
+                    .background(lightblue)
+                    .height(23.dp))
 
             }
         }
